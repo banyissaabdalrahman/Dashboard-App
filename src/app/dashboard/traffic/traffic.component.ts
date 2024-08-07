@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { TrafficService } from '../../services/traffic.service';
-
 @Component({
   selector: 'app-traffic',
   standalone: true,
@@ -10,12 +8,35 @@ import { TrafficService } from '../../services/traffic.service';
   styleUrl: './traffic.component.css'
 })
 export class TrafficComponent {
-
-  constructor(private trafficservice: TrafficService){}
-  
-  dummyTrafficData = this.trafficservice.getTrafficData();
-
-
-  maxTraffic = this.trafficservice.calculateMaxTraffic();
-
+  dummyTrafficData = [
+    {
+      id: 'd1',
+      value: 433,
+    },
+    {
+      id: 'd2',
+      value: 260,
+    },
+    {
+      id: 'd3',
+      value: 290,
+    },
+    {
+      id: 'd4',
+      value: 410,
+    },
+    {
+      id: 'd5',
+      value: 397,
+    },
+    {
+      id: 'd6',
+      value: 488,
+    },
+    {
+      id: 'd47',
+      value: 589,
+    },
+  ];
+  maxTraffic = Math.max(...this.dummyTrafficData.map((data) => data.value));
 }

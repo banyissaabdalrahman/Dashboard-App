@@ -1,4 +1,17 @@
-import { Component, ContentChild, contentChild, ElementRef, HostBinding, HostListener, inject, Input, ViewEncapsulation } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  ViewEncapsulation,
+  afterNextRender,
+  afterRender,
+  contentChild,
+  inject,
+  input,
+} from '@angular/core';
 
 @Component({
   selector: 'app-control',
@@ -7,27 +20,41 @@ import { Component, ContentChild, contentChild, ElementRef, HostBinding, HostLis
   templateUrl: './control.component.html',
   styleUrl: './control.component.css',
   encapsulation: ViewEncapsulation.None,
-  host:{
-    class: "control", // HostBindung
-    '(click)': 'onClick()' // HostListener
-  }
+  host: {
+    class: 'control',
+    '(click)': 'onClick()',
+  },
 })
+export class ControlComponent implements AfterContentInit {
+  // @HostBinding('class') className = 'control';
+  // @HostListener('click') onClick() {
+  //   console.log('Clicked!');
+  // }
+  label = input.required<string>();
+  private el = inject(ElementRef);
+  // @ContentChild('input') private control?: ElementRef<
+  //   HTMLInputElement | HTMLTextAreaElement
+  // >;
+  private control =
+    contentChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('input');
 
-export class ControlComponent {
-  
-  // @ HostBinding('class') className = "control";
-  // @ HostListener('click') onClick = () => console.log('Clicked!')
+  constructor() {
+    afterRender(() => {
+      console.log('afterRender');
+    });
 
-  @Input({ required: true }) label!: string;
-  
-  // private el = inject(ElementRef); --> Accessing Host Elements Programmatically
-  // @ContentChild('input') private control?: ElementRef<HTMLInputElement | HTMLTextAreaElement>;
+    afterNextRender(() => {
+      console.log('afterNextRender');
+    });
+  }
 
-  private control = contentChild<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('input')
-    
-  onClick (){
-    console.log('Clicked!'); // HostListener target method
-    // console.log(this.el);
+  ngAfterContentInit() {
+    // ...
+  }
+
+  onClick() {
+    console.log('Clicked!');
+    console.log(this.el);
     console.log(this.control());
-  } 
+  }
 }
